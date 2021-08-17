@@ -780,7 +780,7 @@ end
 -- Widget creation functions:--
 function config:CreateNoPointsLabel(relativeFrame, name, text)
   local label = relativeFrame:CreateFontString(name);
-  label:SetFontObject("GameFontHighlightLarge");
+  label:SetFontObject("GameFontHighlight");
   label:SetText(text);
   return label;
 end
@@ -801,7 +801,7 @@ end
 
 function config:CreateNothingLabel(relativeFrame)
   local label = relativeFrame:CreateFontString(nil);
-  label:SetFontObject("GameFontHighlightLarge");
+  label:SetFontObject("GameFontHighlight");
   label:SetTextColor(0.5, 0.5, 0.5, 0.5);
   return label;
 end
@@ -812,8 +812,8 @@ function config:CreateButton(name, relativeFrame, text, iconPath, fc)
   local btn = CreateFrame("Button", name, relativeFrame, "NysTDL_NormalButton");
   local w = config:CreateNoPointsLabel(relativeFrame, nil, text):GetWidth();
   btn:SetText(text);
-  btn:SetNormalFontObject("GameFontNormalLarge");
-  if (fc == true) then btn:SetHighlightFontObject("GameFontHighlightLarge"); end
+  btn:SetNormalFontObject("GameFontNormal");
+  if (fc == true) then btn:SetHighlightFontObject("GameFontHighlight"); end
   if (iconPath ~= nil) then
     w = w + 23;
     btn.Icon = btn:CreateTexture(nil, "ARTWORK")
@@ -847,7 +847,7 @@ end
 
 function config:CreateRemoveButton(relativeCheckButton)
   local btn = CreateFrame("Button", nil, relativeCheckButton, "NysTDL_RemoveButton");
-  btn:SetPoint("LEFT", relativeCheckButton, "LEFT", - 20, 0);
+  btn:SetPoint("LEFT", relativeCheckButton, "LEFT", -15, 0);
 
   -- these are for changing the color depending on the mouse actions (since they are custom xml)
   btn:HookScript("OnEnter", function(self)
@@ -871,7 +871,7 @@ end
 
 function config:CreateFavoriteButton(relativeCheckButton, catName, itemName)
   local btn = CreateFrame("Button", nil, relativeCheckButton, "NysTDL_FavoriteButton");
-  btn:SetPoint("LEFT", relativeCheckButton, "LEFT", - 20, -2);
+  btn:SetPoint("LEFT", relativeCheckButton, "LEFT", - 15, -2);
 
   -- these are for changing the color depending on the mouse actions (since they are custom xml)
   -- and yea, this one's a bit complicated because I wanted its look to be really precise...
@@ -926,7 +926,7 @@ end
 
 function config:CreateDescButton(relativeCheckButton, catName, itemName)
   local btn = CreateFrame("Button", nil, relativeCheckButton, "NysTDL_DescButton");
-  btn:SetPoint("LEFT", relativeCheckButton, "LEFT", - 20, 0);
+  btn:SetPoint("LEFT", relativeCheckButton, "LEFT", - 15, 0);
 
   -- these are for changing the color depending on the mouse actions (since they are custom xml)
   -- and yea, this one's a bit complicated too because it works in very specific ways
@@ -983,7 +983,7 @@ function config:CreateNoPointsRenameEditBox(relativeFrame, text, width, height)
   local renameEditBox = CreateFrame("EditBox", relativeFrame:GetName().."_renameEditBox", relativeFrame, "InputBoxTemplate")
   renameEditBox:SetSize(width-10, height)
   renameEditBox:SetText(text)
-  renameEditBox:SetFontObject("GameFontHighlightLarge")
+  renameEditBox:SetFontObject("GameFontHighlight")
   renameEditBox:SetAutoFocus(false)
   renameEditBox:SetFocus()
   if (not NysTDL.db.profile.highlightOnFocus) then

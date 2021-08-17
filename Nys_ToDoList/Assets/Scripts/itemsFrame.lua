@@ -45,9 +45,9 @@ local addACategoryItems = {}
 local tabActionsItems = {}
 local frameOptionsItems = {}
 local currentDBItemsList;
-local categoryNameWidthMax = 220;
-local itemNameWidthMax = 240;
-local centerXOffset = 165;
+local categoryNameWidthMax = 480; --220;
+local itemNameWidthMax = 480; -- 240;
+local centerXOffset = 0;
 local lineOffset = 120;
 local descFrameLevelDiff = 20;
 local tutoFrameRightDist = 40;
@@ -369,7 +369,7 @@ function itemsFrame:updateRemainingNumber()
     categoryLabelFavsRemaining[catName]:SetTextColor(unpack(NysTDL.db.profile.favoritesColor))
   end
 
-  itemsFrame.tdlButton:SetNormalFontObject("GameFontNormalLarge"); -- by default, we reset the color of the TDL button to yellow
+  itemsFrame.tdlButton:SetNormalFontObject("GameFontNormal"); -- by default, we reset the color of the TDL button to yellow
   if (NysTDL.db.profile.tdlButton.red) then -- we check here if we need to color it red here
     local red = false
     -- we first check if there are daily remaining items
@@ -927,7 +927,7 @@ function itemsFrame:DescriptionClick(self)
 
   -- item label
   descFrame.title = descFrame:CreateFontString(itemName.."_descFrameTitle")
-  descFrame.title:SetFontObject("GameFontNormalLarge")
+  descFrame.title:SetFontObject("GameFontNormal")
   descFrame.title:SetPoint("TOPLEFT", descFrame, "TOPLEFT", 6, -5)
   descFrame.title:SetText(itemName)
   descFrame:SetHyperlinksEnabled(true); -- to enable OnHyperlinkClick
@@ -1062,13 +1062,13 @@ local function ItemsFrame_OnVisibilityUpdate()
 end
 
 local function ItemsFrame_Scale()
-  local scale = itemsFrameUI:GetWidth()/340;
-  itemsFrameUI.ScrollFrame.ScrollBar:SetScale(scale)
-  itemsFrameUI.closeButton:SetScale(scale)
-  itemsFrameUI.resizeButton:SetScale(scale)
+  local scale = 1; --240/340;
+  --itemsFrameUI.ScrollFrame.ScrollBar:SetScale(scale)
+  --itemsFrameUI.closeButton:SetScale(scale)
+  --itemsFrameUI.resizeButton:SetScale(scale)
   for i = 1, 3 do
     _G["ToDoListUIFrameTab"..i].content:SetScale(scale)
-    _G["ToDoListUIFrameTab"..i]:SetScale(scale)
+    --_G["ToDoListUIFrameTab"..i]:SetScale(scale)
   end
   for _, v in pairs(tutorialFrames) do
     v:SetScale(scale)
@@ -1212,10 +1212,10 @@ function itemsFrame:CreateMovableCheckBtnElems(catName, itemName)
   local data = NysTDL.db.profile.itemsList[catName][itemName];
 
   if (not config:HasKey(checkBtn, catName)) then checkBtn[catName] = {} end
-  checkBtn[catName][itemName] = CreateFrame("CheckButton", "NysTDL_CheckBtn_"..catName.."_"..itemName, itemsFrameUI, "UICheckButtonTemplate");
-  checkBtn[catName][itemName].InteractiveLabel = config:CreateNoPointsInteractiveLabel(checkBtn[catName][itemName]:GetName().."_InteractiveLabel", checkBtn[catName][itemName], itemName, "GameFontNormalLarge");
+  checkBtn[catName][itemName] = CreateFrame("CheckButton", "NysTDL_CheckBtn_"..catName.."_"..itemName, itemsFrameUI, "OptionsCheckButtonTemplate");
+  checkBtn[catName][itemName].InteractiveLabel = config:CreateNoPointsInteractiveLabel(checkBtn[catName][itemName]:GetName().."_InteractiveLabel", checkBtn[catName][itemName], itemName, "GameFontNormal");
   checkBtn[catName][itemName].InteractiveLabel:SetPoint("LEFT", checkBtn[catName][itemName], "RIGHT")
-  checkBtn[catName][itemName].InteractiveLabel.Text:SetPoint("LEFT", checkBtn[catName][itemName], "RIGHT", 20, 0)
+  checkBtn[catName][itemName].InteractiveLabel.Text:SetPoint("LEFT", checkBtn[catName][itemName], "RIGHT", 10, 0)
   checkBtn[catName][itemName].catName = catName -- easy access to the catName this button is in
   checkBtn[catName][itemName].itemName = itemName -- easy access to the itemName of this button, this also allows the shown text to be different
   if (config:HasHyperlink(itemName)) then -- this is for making more space for items that have hyperlinks in them
@@ -1316,7 +1316,7 @@ end
 
 function itemsFrame:CreateMovableLabelElems(catName)
   -- category label
-  label[catName] = config:CreateNoPointsInteractiveLabel("NysTDL_CatLabel_"..catName, itemsFrameUI, catName, "GameFontHighlightLarge");
+  label[catName] = config:CreateNoPointsInteractiveLabel("NysTDL_CatLabel_"..catName, itemsFrameUI, catName, "GameFontHighlight");
   label[catName].catName = catName -- easy access to the catName of the label, this also allows the shown text to be different
   label[catName].Button:SetScript("OnEnter", function(self)
     local r, g, b = unpack(config:ThemeDownTo01(config.database.theme))
@@ -1477,7 +1477,7 @@ local function loadCategories(tab, categoryLabel, catName, itemNames, lastData)
     -- category label placement
     if (newLabelHeightDelta == 0) then adjustHeight = 0; else adjustHeight = 1; end -- just for a proper clean height
     categoryLabel:SetParent(tab);
-    categoryLabel:SetPoint("TOPLEFT", lastLabel, "TOPLEFT", 0, (-newLabelHeightDelta * 22) - (adjustHeight * 5)); -- here
+    categoryLabel:SetPoint("TOPLEFT", lastLabel, "TOPLEFT", 0, (-newLabelHeightDelta * 22) - (adjustHeight * 0)); -- here
     categoryLabel:Show();
 
     -- category label favs remaining placement
@@ -1508,7 +1508,7 @@ local function loadCategories(tab, categoryLabel, catName, itemNames, lastData)
           buttonsLength = buttonsLength + 1;
 
           checkBtn[catName][itemName]:SetParent(tab);
-          checkBtn[catName][itemName]:SetPoint("TOPLEFT", categoryLabel, "TOPLEFT", 30, - 22 * buttonsLength + 5);
+          checkBtn[catName][itemName]:SetPoint("TOPLEFT", categoryLabel, "TOPLEFT", 20, - 22 * buttonsLength + 5);
           checkBtn[catName][itemName]:Show();
       end
       categoryLabelFavsRemaining[catName]:Hide(); -- the only thing is that we hide it if the category is opened
@@ -1641,10 +1641,10 @@ local function loadAddACategory(tab)
   itemsFrameUI.categoryButton:SetPoint("RIGHT", itemsFrameUI.frameOptionsButton, "LEFT", 2, 0);
 
   itemsFrameUI.categoryTitle:SetParent(tab);
-  itemsFrameUI.categoryTitle:SetPoint("TOP", itemsFrameUI.title, "TOP", 0, - 59);
+  itemsFrameUI.categoryTitle:SetPoint("TOPLEFT", itemsFrameUI.title, "TOPLEFT", 0, - 59);
 
   itemsFrameUI.labelCategoryName:SetParent(tab);
-  itemsFrameUI.labelCategoryName:SetPoint("TOPLEFT", itemsFrameUI.categoryTitle, "TOP", -140, - 35);
+  itemsFrameUI.labelCategoryName:SetPoint("TOPLEFT", itemsFrameUI.categoryTitle, "TOPLEFT", 0, - 35);
   itemsFrameUI.categoryEditBox:SetParent(tab);
   itemsFrameUI.categoryEditBox:SetPoint("RIGHT", itemsFrameUI.labelCategoryName, "LEFT", 257, 0);
 
@@ -1664,7 +1664,7 @@ local function loadTabActions(tab)
   --/************************************************/--
 
   itemsFrameUI.tabActionsTitle:SetParent(tab);
-  itemsFrameUI.tabActionsTitle:SetPoint("TOP", itemsFrameUI.title, "TOP", 0, - 59);
+  itemsFrameUI.tabActionsTitle:SetPoint("TOPLEFT", itemsFrameUI.title, "TOPLEFT", 0, - 59);
   itemsFrameUI.tabActionsTitle:SetText(string.format("|cff%s%s|r", config:RGBToHex(config.database.theme), "/ "..L["Tab actions"].." ("..L[tab:GetName()]..") \\"));
 
   --/************************************************/--
@@ -1689,7 +1689,7 @@ local function loadOptions(tab)
   --/************************************************/--
 
   itemsFrameUI.optionsTitle:SetParent(tab);
-  itemsFrameUI.optionsTitle:SetPoint("TOP", itemsFrameUI.title, "TOP", 0, - 59);
+  itemsFrameUI.optionsTitle:SetPoint("TOPLEFT", itemsFrameUI.title, "TOPLEFT", 0, - 59);
 
   --/************************************************/--
 
@@ -1727,23 +1727,21 @@ end
 -- loading the content (top to bottom)
 local function loadTab(tab)
   itemsFrameUI.title:SetParent(tab);
-  itemsFrameUI.title:SetPoint("TOP", tab, "TOPLEFT", centerXOffset, - 10);
+  itemsFrameUI.title:SetPoint("TOPLEFT", tab, "TOPLEFT", 10, - 10);
 
-  local l = itemsFrameUI.title:GetWidth()
-  itemsFrameUI.titleLineLeft:SetParent(tab)
-  itemsFrameUI.titleLineRight:SetParent(tab)
-  itemsFrameUI.titleLineLeft:SetStartPoint("TOPLEFT", centerXOffset-lineOffset, -18)
-  itemsFrameUI.titleLineLeft:SetEndPoint("TOPLEFT", centerXOffset-l/2 -10, -18)
-  itemsFrameUI.titleLineRight:SetStartPoint("TOPLEFT", centerXOffset+l/2 +10, -18)
-  itemsFrameUI.titleLineRight:SetEndPoint("TOPLEFT", centerXOffset+lineOffset, -18)
+  --local l = itemsFrameUI.title:GetWidth()
+  --itemsFrameUI.titleLineLeft:SetParent(tab)
+  --itemsFrameUI.titleLineRight:SetParent(tab)
+  --itemsFrameUI.titleLineLeft:SetStartPoint("TOPLEFT", centerXOffset-lineOffset, -18)
+  --itemsFrameUI.titleLineLeft:SetEndPoint("TOPLEFT", centerXOffset-l/2 -10, -18)
+  --itemsFrameUI.titleLineRight:SetStartPoint("TOPLEFT", centerXOffset+l/2 +10, -18)
+  --itemsFrameUI.titleLineRight:SetEndPoint("TOPLEFT", centerXOffset+lineOffset, -18)
 
-  itemsFrameUI.remaining:SetParent(tab);
-  itemsFrameUI.remaining:SetPoint("TOPLEFT", itemsFrameUI.title, "TOP", - 140, - 30);
   itemsFrameUI.remainingNumber:SetParent(tab);
-  itemsFrameUI.remainingNumber:SetPoint("LEFT", itemsFrameUI.remaining, "RIGHT", 6, 0);
+  itemsFrameUI.remainingNumber:SetPoint("LEFT", itemsFrameUI.title, "RIGHT", 10, 0);
 
   itemsFrameUI.helpButton:SetParent(tab);
-  itemsFrameUI.helpButton:SetPoint("TOPRIGHT", itemsFrameUI.title, "TOP", 140, - 23);
+  itemsFrameUI.helpButton:SetPoint("TOPRIGHT", itemsFrameUI, "TOPRIGHT", -30, 0);
 
   itemsFrameUI.undoButton:SetParent(tab);
   itemsFrameUI.undoButton:SetPoint("RIGHT", itemsFrameUI.helpButton, "LEFT", 2, 0);
@@ -1775,15 +1773,15 @@ local function loadTab(tab)
       l = itemsFrameUI.optionsTitle:GetWidth()
     end
     if ((l/2 + 15) <= lineOffset) then
-      itemsFrameUI.menuTitleLineLeft:SetStartPoint("TOPLEFT", centerXOffset-lineOffset, -78)
-      itemsFrameUI.menuTitleLineLeft:SetEndPoint("TOPLEFT", centerXOffset-l/2 - 10, -78)
-      itemsFrameUI.menuTitleLineRight:SetStartPoint("TOPLEFT", centerXOffset+l/2 + 10, -78)
-      itemsFrameUI.menuTitleLineRight:SetEndPoint("TOPLEFT", centerXOffset+lineOffset, -78)
-      itemsFrameUI.menuTitleLineLeft:Show()
-      itemsFrameUI.menuTitleLineRight:Show()
+      --itemsFrameUI.menuTitleLineLeft:SetStartPoint("TOPLEFT", centerXOffset-lineOffset, -78)
+      --itemsFrameUI.menuTitleLineLeft:SetEndPoint("TOPLEFT", centerXOffset-l/2 - 10, -78)
+      --itemsFrameUI.menuTitleLineRight:SetStartPoint("TOPLEFT", centerXOffset+l/2 + 10, -78)
+      --itemsFrameUI.menuTitleLineRight:SetEndPoint("TOPLEFT", centerXOffset+lineOffset, -78)
+      --itemsFrameUI.menuTitleLineLeft:Show()
+      --itemsFrameUI.menuTitleLineRight:Show()
     else
-      itemsFrameUI.menuTitleLineLeft:Hide()
-      itemsFrameUI.menuTitleLineRight:Hide()
+      --itemsFrameUI.menuTitleLineLeft:Hide()
+      --itemsFrameUI.menuTitleLineRight:Hide()
     end
   end
 
@@ -1814,8 +1812,8 @@ local function loadTab(tab)
     if (tabActionsClosed) then -- if the options menu is closed
       if (optionsClosed) then -- and if the tab actions menu is closed too
         -- we place the line just below the buttons
-        itemsFrameUI.lineBottom:SetStartPoint("TOPLEFT", centerXOffset-lineOffset, -78)
-        itemsFrameUI.lineBottom:SetEndPoint("TOPLEFT", centerXOffset+lineOffset, -78)
+        itemsFrameUI.lineBottom:SetStartPoint("TOPLEFT", 0, -78)
+        itemsFrameUI.lineBottom:SetEndPoint("TOPLEFT", 0, -78)
       else
         -- or else we show and adapt the height of every component of the "options"
         local height = 0;
@@ -1825,8 +1823,8 @@ local function loadTab(tab)
         end
 
         -- and show the line below them
-        itemsFrameUI.lineBottom:SetStartPoint("TOPLEFT", centerXOffset-lineOffset, height - 62)
-        itemsFrameUI.lineBottom:SetEndPoint("TOPLEFT", centerXOffset+lineOffset, height - 62)
+        itemsFrameUI.lineBottom:SetStartPoint("TOPLEFT", 0, height - 62)
+        itemsFrameUI.lineBottom:SetEndPoint("TOPLEFT", 0, height - 62)
       end
     else
       -- or else we show and adapt the height of every component of the "tab actions"
@@ -1837,8 +1835,8 @@ local function loadTab(tab)
       end
 
       -- and show the line below them
-      itemsFrameUI.lineBottom:SetStartPoint("TOPLEFT", centerXOffset-lineOffset, height - 62)
-      itemsFrameUI.lineBottom:SetEndPoint("TOPLEFT", centerXOffset+lineOffset, height - 62)
+      itemsFrameUI.lineBottom:SetStartPoint("TOPLEFT", 0, height - 62)
+      itemsFrameUI.lineBottom:SetEndPoint("TOPLEFT", 0, height - 62)
     end
   else
     -- or else we show and adapt the height of every component of the "add a category"
@@ -1849,12 +1847,12 @@ local function loadTab(tab)
     end
 
     -- and show the line below the elements of the "add a category"
-    itemsFrameUI.lineBottom:SetStartPoint("TOPLEFT", centerXOffset-lineOffset, height - 62)
-    itemsFrameUI.lineBottom:SetEndPoint("TOPLEFT", centerXOffset+lineOffset, height - 62)
+    itemsFrameUI.lineBottom:SetStartPoint("TOPLEFT", 0, height - 62)
+    itemsFrameUI.lineBottom:SetEndPoint("TOPLEFT", 0, height - 62)
   end
 
   itemsFrameUI.dummyLabel:SetParent(tab)
-  itemsFrameUI.dummyLabel:SetPoint("TOPLEFT", itemsFrameUI.lineBottom, "TOPLEFT", - 35, - 20)
+  itemsFrameUI.dummyLabel:SetPoint("TOPLEFT", itemsFrameUI.lineBottom, "TOPLEFT", 10, 0)
 
   -- generating all of the content (items, checkboxes, editboxes, category labels...)
   generateTab(tab)
@@ -1865,7 +1863,7 @@ local function loadTab(tab)
 
   -- then we show/hide the nothing label depending on the result and shownInTab
   itemsFrameUI.nothingLabel:SetParent(tab)
-  itemsFrameUI.nothingLabel:SetPoint("TOP", itemsFrameUI.lineBottom, "TOP", 0, - 20) -- to correctly center this text on diffent screen sizes
+  itemsFrameUI.nothingLabel:SetPoint("TOPLEFT", itemsFrameUI.lineBottom, "TOPLEFT", 10, 0) -- to correctly center this text on diffent screen sizes
   itemsFrameUI.nothingLabel:Hide()
   if (checked[tab:GetName()] + unchecked[tab:GetName()] == 0) then -- if there is nothing to show in the tab we're in
     itemsFrameUI.nothingLabel:SetText(L["There are no items!"])
@@ -1907,7 +1905,7 @@ local function generateAddACategory()
   --/************************************************/--
 
   itemsFrameUI.labelCategoryName = itemsFrameUI:CreateFontString(nil); -- info label 2
-  itemsFrameUI.labelCategoryName:SetFontObject("GameFontHighlightLarge");
+  itemsFrameUI.labelCategoryName:SetFontObject("GameFontHighlight");
   itemsFrameUI.labelCategoryName:SetText(L["Category:"]);
   table.insert(addACategoryItems, itemsFrameUI.labelCategoryName);
 
@@ -2084,7 +2082,7 @@ local function generateAddACategory()
   --/************************************************/--
 
   itemsFrameUI.labelFirstItemName = itemsFrameUI:CreateFontString(nil); -- info label 3
-  itemsFrameUI.labelFirstItemName:SetFontObject("GameFontHighlightLarge");
+  itemsFrameUI.labelFirstItemName:SetFontObject("GameFontHighlight");
   itemsFrameUI.labelFirstItemName:SetText(L["First item:"]);
   table.insert(addACategoryItems, itemsFrameUI.labelFirstItemName);
 
@@ -2252,13 +2250,15 @@ end
 local function generateFrameContent()
   -- title
   itemsFrameUI.title = config:CreateNoPointsLabel(itemsFrameUI, nil, string.gsub(config.toc.title, "Ny's ", ""));
-  itemsFrameUI.title:SetFontObject("GameFontNormalLarge");
+  --itemsFrameUI.title = CreateFrame("Frame", name, itemsFrameUI, "ObjectiveTrackerHeaderTemplate")
+  --itemsFrameUI.title.Text:SetText(string.gsub(config.toc.title, "Ny's ", ""));
+  itemsFrameUI.title:SetFontObject("GameFontNormalMed2");
 
   -- remaining label
-  itemsFrameUI.remaining = config:CreateNoPointsLabel(itemsFrameUI, nil, L["Remaining:"]);
-  itemsFrameUI.remaining:SetFontObject("GameFontNormalLarge");
+  --itemsFrameUI.remaining = config:CreateNoPointsLabel(itemsFrameUI, nil, L["Remaining:"]);
+  --itemsFrameUI.remaining:SetFontObject("GameFontNormal");
   itemsFrameUI.remainingNumber = config:CreateNoPointsLabel(itemsFrameUI, nil, "...");
-  itemsFrameUI.remainingNumber:SetFontObject("GameFontNormalLarge");
+  itemsFrameUI.remainingNumber:SetFontObject("GameFontNormal");
 
   -- help button
   itemsFrameUI.helpButton = config:CreateHelpButton(itemsFrameUI);
