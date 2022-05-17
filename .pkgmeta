@@ -1,4 +1,5 @@
-package-as: MiniMapLine
+package-as: Todo
 ignore:
     - screenshots
+    - logo.png
     - README.md
