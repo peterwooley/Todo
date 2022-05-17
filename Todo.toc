@@ -1,0 +1,14 @@
+## Interface: 90200
+## Version: 1.0.0
+
+## Author: Peter Wooley <peterwooley@gmail.com>
+## Title: Todo
+## Notes: Track your daily, weekly, and long-term goals using categories and profiles
+
+## DefaultState: enabled
+## SavedVariables: TodoDB
+
+## OptionalDeps: Ace3, LibDBIcon-1.0, !LibUIDropDownMenu
+## X-Embeds: Ace3, LibDBIcon-1.0, !LibUIDropDownMenu
+
+Main.xml

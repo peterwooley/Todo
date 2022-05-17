@@ -1,8 +1,0 @@
-<!-- *******************/ BINDINGS FILE /********************** -->
-
-<!-- Show/Hide the list binding -->
-<Bindings>
-  <Binding name="NysTDL" header="NysTDL" category="ADDONS">
-    NysTDL:ToggleFrame();
-  </Binding>
-</Bindings>

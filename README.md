@@ -1,30 +1,16 @@
-# Ny's To-Do List
-WoW addon for retail and classic
+# Todo Add-on
 
-![Preview](https://github.com/Ny0n/Nys_ToDoList/blob/main/.other/previews/preview1.png?raw=true)
+Track your daily, weekly, and long-term goals using categories and profiles. Tasks created in Daily tab automatically reset each day at 8:00am (configurable in options) and tasks created in the Weekly tab reset each Tuesday (configurable in options). 
 
-This addon provides a simple frame where you can view and store all your to-do’s,
-and everything can be sorted as daily or weekly, in which cases it will reset automatically when the time comes!
-You also have the possibility to favorite items, and even put descriptions on them if you need to.
+<img src="screenshots/default.png" alt="Screenshot of Todo add-on showing a bunch of todo items" />
+<img src="screenshots/weekly-tab.png" alt="Screenshot of Todo add-on showing weekly todo items" />
+<img src="screenshots/add-category.png" alt="Screenshot of Todo add-on showing the Add a Category screen" />
 
-If you are having any problems, tap the information button on the list to print help in the chat,
-it will surely give you the answers you are looking for.
+## Usage
+1. Install the Todo add-on using CurseForge, WowUp, or any other add-on manager.
+2. Open the Todo window using the minimap button or the `/todo` command.
+3. Follow the on-screen tutorial to create a new category and todo item
+4. Open the add-on options to set a custom key binding and fine-tune your settings
 
-#### **How to toggle:**
-
-- minimap button (the default)
-- key binding
-- databroker plugin
-- normal button that you can place anywhere on your screen
-- '/tdl' chat command
-
-## Feedback
-
-Please report any bugs (with error messages if possible) through an [issue](https://github.com/Ny0n/Nys_ToDoList/issues/new) on GitHub.
-
-You can also visit [the addon's page on curseforge](https://www.curseforge.com/wow/addons/nys-todolist) to give direct feedback.
-
-## Downloads and changelog
-
-- [Curseforge](https://www.curseforge.com/wow/addons/nys-todolist/files)
-- [GitHub](https://github.com/Ny0n/Nys_ToDoList/releases)
+## Author
+Created by Peter Wooley. Based on [Ny's To-Do List add-on](https://www.curseforge.com/wow/addons/nys-todolist)
