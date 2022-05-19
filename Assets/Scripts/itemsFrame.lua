@@ -1721,17 +1721,9 @@ local function loadTab(tab)
   itemsFrameUI.title:SetParent(tab);
   itemsFrameUI.title:SetPoint("TOPLEFT", tab, "TOPLEFT", 10, - 10);
 
-  --local l = itemsFrameUI.title:GetWidth()
-  --itemsFrameUI.titleLineLeft:SetParent(tab)
-  --itemsFrameUI.titleLineRight:SetParent(tab)
-  --itemsFrameUI.titleLineLeft:SetStartPoint("TOPLEFT", centerXOffset-lineOffset, -18)
-  --itemsFrameUI.titleLineLeft:SetEndPoint("TOPLEFT", centerXOffset-l/2 -10, -18)
-  --itemsFrameUI.titleLineRight:SetStartPoint("TOPLEFT", centerXOffset+l/2 +10, -18)
-  --itemsFrameUI.titleLineRight:SetEndPoint("TOPLEFT", centerXOffset+lineOffset, -18)
-
   itemsFrameUI.remainingNumber:SetParent(tab);
-  itemsFrameUI.remainingNumber:SetPoint("LEFT", itemsFrameUI.title, "RIGHT", 10, 0);
-
+  itemsFrameUI.remainingNumber:SetPoint("LEFT", itemsFrameUI.title, "RIGHT", 5, 0);
+  
   itemsFrameUI.helpButton:SetParent(tab);
   itemsFrameUI.helpButton:SetPoint("TOPRIGHT", itemsFrameUI, "TOPRIGHT", -25, -8);
 
@@ -2157,7 +2149,8 @@ local function generateFrameContent()
 
   -- remaining label
   itemsFrameUI.remainingNumber = config:CreateNoPointsLabel(itemsFrameUI, nil, "...");
-  itemsFrameUI.remainingNumber:SetFontObject("GameFontNormal");
+  itemsFrameUI.remainingNumber:SetFontObject("GameFontNormalMed2");
+  itemsFrameUI.remainingNumber:SetJustifyH("LEFT");
 
   -- help button
   itemsFrameUI.helpButton = config:CreateHelpButton(itemsFrameUI);

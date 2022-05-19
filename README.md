@@ -12,5 +12,5 @@ Track your daily, weekly, and long-term goals using categories and profiles. Tas
 3. Follow the on-screen tutorial to create a new category and todo item
 4. Open the add-on options to set a custom key binding and fine-tune your settings
 
-## Author
-Created by Peter Wooley. Based on [Ny's To-Do List add-on](https://www.curseforge.com/wow/addons/nys-todolist)
+## Credit
+Forked from [Ny's To-Do List add-on](https://www.curseforge.com/wow/addons/nys-todolist) and adapted by Peter Wooley
