@@ -1244,8 +1244,12 @@ function itemsFrame:CreateMovableCheckBtnElems(catName, itemName)
     end
   end);
   checkBtn[catName][itemName].InteractiveLabel:SetHyperlinksEnabled(true); -- to enable OnHyperlinkClick
-  checkBtn[catName][itemName].InteractiveLabel:SetScript("OnHyperlinkClick", function(_, linkData, link, button)
-    ChatFrame_OnHyperlinkShow(ChatFrame1, linkData, link, button)
+  checkBtn[catName][itemName].InteractiveLabel:SetScript("OnHyperlinkClick", function(self, linkData, link, button)
+    if (button == "RightButton") then
+      self.Button:GetScript("OnDoubleClick")(self.Button)
+    else
+      ChatFrame_OnHyperlinkShow(ChatFrame1, linkData, link, button)
+    end
   end);
   checkBtn[catName][itemName].InteractiveLabel.Button:SetScript("OnDoubleClick", function(self)
     -- first, we hide the label
