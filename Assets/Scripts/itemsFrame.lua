@@ -161,15 +161,6 @@ local function FrameAlphaSlider_OnValueChanged(_, value)
   itemsFrameUI.frameAlphaSliderValue:SetText(value);
   itemsFrameUI:SetBackdropColor(0, 0, 0, value/100);
   itemsFrameUI:SetBackdropBorderColor(1, 1, 1, value/100);
-  for i = 1, 3 do
-    _G["TodoUIFrameTab"..i.."Left"]:SetAlpha((value)/100);
-    _G["TodoUIFrameTab"..i.."LeftDisabled"]:SetAlpha((value)/100);
-    _G["TodoUIFrameTab"..i.."Middle"]:SetAlpha((value)/100);
-    _G["TodoUIFrameTab"..i.."MiddleDisabled"]:SetAlpha((value)/100);
-    _G["TodoUIFrameTab"..i.."Right"]:SetAlpha((value)/100);
-    _G["TodoUIFrameTab"..i.."RightDisabled"]:SetAlpha((value)/100);
-    _G["TodoUIFrameTab"..i.."HighlightTexture"]:SetAlpha((value)/100);
-  end
 
   -- description frames part
   if (Todo.db.profile.affectDesc) then
@@ -198,10 +189,10 @@ local function FrameContentAlphaSlider_OnValueChanged(_, value)
   itemsFrameUI.ScrollFrame.ScrollBar:SetAlpha((value)/100);
   itemsFrameUI.closeButton:SetAlpha((value)/100);
   itemsFrameUI.resizeButton:SetAlpha((value)/100);
-  for i = 1, 3 do
-    _G["TodoUIFrameTab"..i.."Text"]:SetAlpha((value)/100);
-    _G["TodoUIFrameTab"..i].content:SetAlpha((value)/100);
-  end
+  -- for i = 1, 3 do
+  --   _G["TodoUIFrameTab"..i.."Text"]:SetAlpha((value)/100);
+  --   _G["TodoUIFrameTab"..i].content:SetAlpha((value)/100);
+  -- end
 
   -- description frames part
   if (Todo.db.profile.affectDesc) then
@@ -830,7 +821,7 @@ function itemsFrame:DescriptionClick(self)
 
   -- properties
   descFrame:SetResizable(true);
-  descFrame:SetMinResize(descFrame:GetWidth(), descFrame:GetHeight());
+  --descFrame:SetMinResize(descFrame:GetWidth(), descFrame:GetHeight());
   descFrame:SetFrameLevel(300 + #descFrames*descFrameLevelDiff);
   descFrame:SetMovable(true);
   descFrame:SetClampedToScreen(true);
@@ -1213,7 +1204,7 @@ function itemsFrame:CreateMovableCheckBtnElems(catName, itemName)
   local data = Todo.db.profile.itemsList[catName][itemName];
 
   if (not config:HasKey(checkBtn, catName)) then checkBtn[catName] = {} end
-  checkBtn[catName][itemName] = CreateFrame("CheckButton", "Todo_CheckBtn_"..catName.."_"..itemName, itemsFrameUI, "OptionsCheckButtonTemplate");
+  checkBtn[catName][itemName] = CreateFrame("CheckButton", "Todo_CheckBtn_"..catName.."_"..itemName, itemsFrameUI, "UICheckButtonTemplate");
   checkBtn[catName][itemName].InteractiveLabel = config:CreateNoPointsInteractiveLabel(checkBtn[catName][itemName]:GetName().."_InteractiveLabel", checkBtn[catName][itemName], itemName, "GameFontNormal");
   checkBtn[catName][itemName].InteractiveLabel:SetPoint("LEFT", checkBtn[catName][itemName], "RIGHT")
   checkBtn[catName][itemName].InteractiveLabel.Text:SetPoint("LEFT", checkBtn[catName][itemName], "RIGHT", 10, 0)
@@ -2350,21 +2341,13 @@ local function SetTabs(frame, numTabs, ...)
   local frameName = frame:GetName();
 
   for i = 1, numTabs do
-    local tab = CreateFrame("Button", frameName.."Tab"..i, frame, "CharacterFrameTabButtonTemplate");
+    local tab = CreateFrame("Button", frameName.."Tab"..i, frame, "PanelTabButtonTemplate");
 
     tab:SetID(i);
     tab:SetText(select(i, ...));
     tab:SetScript("OnClick", function(self)
       itemsFrame:ReloadTab(self:GetName())
     end);
-
-    if (i == 1) then -- OnUpdate hook
-      tab:HookScript("OnUpdate", function()
-        for i = 1, 3 do
-          _G["TodoUIFrameTab"..i.."Text"]:SetAlpha((Todo.db.profile.frameContentAlpha)/100);
-        end
-      end);
-    end
 
     local name = ""
     if (tab:GetName() == "TodoUIFrameTab1") then name = "All"
@@ -2379,7 +2362,7 @@ local function SetTabs(frame, numTabs, ...)
     if (i == 1) then -- position
       tab:SetPoint("TOPLEFT", itemsFrameUI, "BOTTOMLEFT", 5, 2);
     else
-      tab:SetPoint("TOPLEFT", _G[frameName.."Tab"..(i - 1)], "TOPRIGHT", - 14, 0);
+      tab:SetPoint("TOPLEFT", _G[frameName.."Tab"..(i - 1)], "TOPRIGHT", 0, 0);
     end
   end
 
@@ -2488,8 +2471,8 @@ function itemsFrame:CreateItemsFrame()
 
   -- properties
   itemsFrameUI:SetResizable(true);
-  itemsFrameUI:SetMinResize(240, 284);
-  itemsFrameUI:SetMaxResize(600, 1000);
+  --itemsFrameUI:SetMinResize(240, 284);
+  --itemsFrameUI:SetMaxResize(600, 1000);
   itemsFrameUI:SetFrameLevel(200);
   itemsFrameUI:SetMovable(true);
   itemsFrameUI:SetClampedToScreen(true);
