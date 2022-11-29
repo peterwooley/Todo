@@ -92,28 +92,7 @@ config.database = {
                       desc = L["Change the color for the favorite items"],
                       get = "favoritesColorGET",
                       set = "favoritesColorSET",
-                      disabled = function() return Todo.db.profile.rainbow end,
                   }, -- favoritesColor
-                  rainbow = {
-                      order = 3.5,
-                      type = "toggle",
-                      name = L["Rainbow"],
-                      desc = L["Too.. Many.. Colors..."],
-                      get = "rainbowGET",
-                      set = "rainbowSET",
-                  }, -- rainbow
-                  rainbowSpeed = {
-                      order = 3.6,
-                      type = "range",
-                      name = L["Rainbow speed"],
-                      desc = L["Because why not?"],
-                      min = 1,
-                      max = 6,
-                      step = 1,
-                      get = "rainbowSpeedGET",
-                      set = "rainbowSpeedSET",
-                      hidden = function() return not Todo.db.profile.rainbow end
-                  }, -- rainbowSpeed
                   todoButtonShow = {
                       order = 2.3,
                       type = "toggle",

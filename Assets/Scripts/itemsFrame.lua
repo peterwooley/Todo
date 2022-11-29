@@ -737,56 +737,6 @@ function itemsFrame:FavoriteClick(self)
   itemsFrame:ReloadTab() -- we reload the tab to instantly display the changes
 end
 
-function itemsFrame:ApplyNewRainbowColor(i)
-  i = i or 1
-  -- when called, takes the current favs color, goes to the next one i times, then updates the visual
-  local r, g, b = unpack(Todo.db.profile.favoritesColor)
-  local Cmax = math.max(r, g, b)
-  local Cmin = math.min(r, g, b)
-  local delta = Cmax - Cmin
-
-  local Hue;
-  if (delta == 0) then
-    Hue = 0;
-  elseif(Cmax == r) then
-    Hue = 60 * (((g-b)/delta)%6)
-  elseif(Cmax == g) then
-    Hue = 60 * (((b-r)/delta)+2)
-  elseif(Cmax == b) then
-    Hue = 60 * (((r-g)/delta)+4)
-  end
-
-  if (Hue >= 359) then
-    Hue = 0
-  else
-    Hue = Hue + i
-    if (Hue >= 359) then
-      Hue = Hue - 359
-    end
-  end
-
-  local X = 1-math.abs((Hue/60)%2-1)
-
-  if (Hue < 60) then
-    r, g, b = 1, X, 0
-  elseif(Hue < 120) then
-    r, g, b = X, 1, 0
-  elseif(Hue < 180) then
-    r, g, b = 0, 1, X
-  elseif(Hue < 240) then
-    r, g, b = 0, X, 1
-  elseif(Hue < 300) then
-    r, g, b = X, 0, 1
-  elseif(Hue < 360) then
-    r, g, b = 1, 0, X
-  end
-
-  -- we apply the new color
-  Todo.db.profile.favoritesColor = { r, g, b }
-  itemsFrame:updateCheckButtonsColor()
-  itemsFrame:updateRemainingNumber()
-end
-
 function itemsFrame:descriptionFrameHide(name)
   -- here, if the name matches one of the opened description frames, we hide that frame, delete it from memory and reupdate the levels of every other active ones
   for pos, v in pairs(descFrames) do
@@ -853,14 +803,6 @@ function itemsFrame:DescriptionClick(self)
         else
           local r, g, b = unpack(config:ThemeDownTo01(config.database.theme_yellow));
           self.title:SetTextColor(r, g, b, currentAlpha);
-        end
-      end
-
-      -- if the desc frame is the oldest (the first opened on screen, or subsequently the one who has the lowest frame level)
-      -- we use that one to cycle the rainbow colors if the list gets closed
-      if (not itemsFrameUI:IsShown()) then
-        if (self:GetFrameLevel() == 300) then
-          if (Todo.db.profile.rainbow) then itemsFrame:ApplyNewRainbowColor(Todo.db.profile.rainbowSpeed) end
         end
       end
 
@@ -1067,16 +1009,17 @@ local function ItemsFrame_Scale()
   end
 end
 
+local timeElapsed = 0
 local function ItemsFrame_OnUpdate(self, elapsed)
   -- called every frame
   self.timeSinceLastUpdate = self.timeSinceLastUpdate + elapsed;
   self.timeSinceLastRefresh = self.timeSinceLastRefresh + elapsed;
 
-  -- if (self:IsMouseOver()) then
-  --   itemsFrameUI.ScrollFrame.ScrollBar:Show()
-  -- else
-  --   itemsFrameUI.ScrollFrame.ScrollBar:Hide()
-  -- end
+  timeElapsed = timeElapsed + elapsed
+  if timeElapsed < .165 then
+    return
+  end
+  timeElapsed = 0
 
   if (self.isMouseDown and not self.hasMoved) then
     local x, y = GetCursorPosition()
@@ -1085,6 +1028,8 @@ local function ItemsFrame_OnUpdate(self, elapsed)
       self.hasMoved = true
     end
   end
+
+
 
   -- testing and showing the right button next to each items
   if (IsShiftKeyDown()) then
@@ -1177,13 +1122,6 @@ local function ItemsFrame_OnUpdate(self, elapsed)
     tutorialFrames[tuto_order[#tuto_order]]:SetShown(false); -- we don't need to do the big loop above, we just need to hide the last tutorial frame (it's just optimization)
     Todo.db.global.tuto_progression = Todo.db.global.tuto_progression + 1; -- and we also add a step of progression, just so that we never enter this 'if' again. (optimization too :D)
     ItemsFrame_OnVisibilityUpdate() -- and finally, we reset the menu openings of the list at the end of the tutorial, for more visibility
-  end
-
-  while (self.timeSinceLastUpdate > updateRate) do -- every 0.05 sec (instead of every frame which is every 1/144 (0.007) sec for a 144hz display... optimization :D)
-    if (Todo.db.profile.rainbow) then
-      itemsFrame:ApplyNewRainbowColor(Todo.db.profile.rainbowSpeed)
-    end
-    self.timeSinceLastUpdate = self.timeSinceLastUpdate - updateRate;
   end
 
   while (self.timeSinceLastRefresh > refreshRate) do -- every one second

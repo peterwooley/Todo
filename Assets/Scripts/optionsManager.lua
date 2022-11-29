@@ -351,26 +351,6 @@ function Todo:favoritesColorSET(info, ...)
   itemsFrame:updateRemainingNumber()
 end
 
---rainbow
-function Todo:rainbowGET(info)
-  Todo:rainbowSET(info, Todo.db.profile.rainbow);
-  return Todo.db.profile.rainbow;
-end
-
-function Todo:rainbowSET(info, newValue)
-  Todo.db.profile.rainbow = newValue;
-end
-
---rainbowSpeed
-function Todo:rainbowSpeedGET(info)
-  Todo:rainbowSpeedSET(info, Todo.db.profile.rainbowSpeed);
-  return Todo.db.profile.rainbowSpeed;
-end
-
-function Todo:rainbowSpeedSET(info, newValue)
-  Todo.db.profile.rainbowSpeed = newValue;
-end
-
 -- todoButtonShow
 function Todo:todoButtonShowGET(info)
   Todo:todoButtonShowSET(info, Todo.db.profile.todoButton.show)
