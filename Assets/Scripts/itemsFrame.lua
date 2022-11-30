@@ -1409,9 +1409,9 @@ local function loadCategories(tab, categoryLabel, catName, itemNames, lastData)
     end
 
     -- category label placement
-    if (newLabelHeightDelta == 0) then adjustHeight = 0; else adjustHeight = 1; end -- just for a proper clean height
+    if (newLabelHeightDelta == 0) then adjustHeight = 0; else adjustHeight = 5; end -- just for a proper clean height
     categoryLabel:SetParent(tab);
-    categoryLabel:SetPoint("TOPLEFT", lastLabel, "TOPLEFT", 0, (-newLabelHeightDelta * 22) - (adjustHeight * 0)); -- here
+    categoryLabel:SetPoint("TOPLEFT", lastLabel, "TOPLEFT", 0, -newLabelHeightDelta * 21 - adjustHeight); -- here
     categoryLabel:Show();
 
     -- category label favs remaining placement
@@ -1433,7 +1433,7 @@ local function loadCategories(tab, categoryLabel, catName, itemNames, lastData)
           buttonsLength = buttonsLength + 1;
 
           checkBtn[catName][itemName]:SetParent(tab);
-          checkBtn[catName][itemName]:SetPoint("TOPLEFT", categoryLabel, "TOPLEFT", 20, - 22 * buttonsLength + 5);
+          checkBtn[catName][itemName]:SetPoint("TOPLEFT", categoryLabel, "TOPLEFT", 20, - 21 * buttonsLength +8);
           checkBtn[catName][itemName]:Show();
       end
       categoryLabelFavsRemaining[catName]:Hide(); -- the only thing is that we hide it if the category is opened
