@@ -628,6 +628,17 @@ function Todo:midweekDaySET(info, newValue)
   Todo.db.profile.autoReset["Midweek"] = config:GetSecondsToReset().midweek;
 end
 
+-- midweekHour
+function Todo:midweekHourGET(info)
+  Todo:midweekHourSET(info, Todo.db.profile.midweekHour)
+  return Todo.db.profile.midweekHour;
+end
+
+function Todo:midweekHourSET(info, newValue)
+  Todo.db.profile.midweekHour = newValue;
+  Todo.db.profile.autoReset["Midweek"] = config:GetSecondsToReset().midweek;
+end
+
 -- dailyHour
 function Todo:dailyHourGET(info)
   Todo:dailyHourSET(info, Todo.db.profile.dailyHour)

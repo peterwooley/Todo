@@ -237,8 +237,16 @@ config.database = {
                       get = "hideDailyTabItemsGET",
                       set = "hideDailyTabItemsSET",
                   }, -- hideDailyTabItems
+                  hideMidweekTabItems = {
+                    order = 3.1,
+                    type = "toggle",
+                    name = L["Hide checked items"],
+                    desc = L["Automatically hides checked items in the tab until the next reset"],
+                    get = "hideMidweekTabItemsGET",
+                    set = "hideMidweekTabItemsSET",
+                }, -- hideMidweekTabItems
                   hideWeeklyTabItems = {
-                      order = 3.1,
+                      order = 4.1,
                       type = "toggle",
                       name = L["Hide checked items"],
                       desc = L["Automatically hides checked items in the tab until the next reset"],
@@ -280,6 +288,12 @@ config.database = {
                     width = "full",
                     name = "\n",
                   }, -- spacer399
+                  spacer499 = {
+                    order = 4.99,
+                    type = "description",
+                    width = "full",
+                    name = "\n",
+                  }, -- spacer499
 
                   -- headers
                   header1 = {
@@ -300,8 +314,13 @@ config.database = {
                   header4 = {
                     order = 3,
                     type = "header",
-                    name = L["Weekly"],
+                    name = L["Midweek"],
                   }, -- header4
+                  header5 = {
+                    order = 4,
+                    type = "header",
+                    name = L["Weekly"],
+                  }, -- header5
                 } -- args
               }, -- tabs
               chat = {
@@ -427,7 +446,7 @@ config.database = {
                     type = "select",
                     style = "dropdown",
                     name = L["Midweek reset day"],
-                    desc = L["Choose the day for the Midweek reset"],
+                    desc = L["Choose the day for the midweek reset"],
                     values = {
                       [2] = L["Monday"],
                       [3] = L["Tuesday"],
@@ -444,18 +463,26 @@ config.database = {
                     set = "midweekDaySET",
                 }, -- midweekDay
                 midweekHour = {
-                    order = 0.2,
+                    order = 1.2,
                     type = "range",
                     name = L["Midweek reset hour"],
-                    desc = L["Choose the hour for the Midweek reset"],
+                    desc = L["Choose the hour for the midweek reset"],
                     min = 0,
                     max = 23,
                     step = 1,
-                    get = "dailyHourGET",
-                    set = "dailyHourSET",
+                    get = "midweekHourGET",
+                    set = "midweekHourSET",
                 }, -- midweekHour
 
                   -- / layout widgets / --
+
+                  -- spacers
+                  spacer099 = {
+                    order = 0.99,
+                    type = "description",
+                    width = "full",
+                    name = "\n",
+                  }, -- spacer099
 
                   -- headers
                   header1 = {
