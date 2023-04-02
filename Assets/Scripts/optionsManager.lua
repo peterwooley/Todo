@@ -45,11 +45,11 @@ function Todo:Warn()
 
           -- then we check if there are midweek ones
           if (midweek > 0) then
-            if ((Todo.db.profile.autoReset["MidWeek"] - time()) < 86400) then -- if there is less than one day left before the weekly reset
+            if ((Todo.db.profile.autoReset["Midweek"] - time()) < 86400) then -- if there is less than one day left before the weekly reset
               if (str ~= "") then
                 str = str.." + "
               end
-              str = str..midweek.." ("..L["MidWeek"]..")"
+              str = str..midweek.." ("..L["Midweek"]..")"
             end
           end
 
@@ -232,7 +232,7 @@ function Todo:DBInit()
   end
 
   -- initialization of elements that need access to other files functions or need to be updated correctly when the profile changes
-  if (self.db.profile.autoReset == nil) then self.db.profile.autoReset = { ["Daily"] = config:GetSecondsToReset().daily, ["MidWeek"] = config:GetSecondsToReset().midweek, ["Weekly"] = config:GetSecondsToReset().weekly } end
+  if (self.db.profile.autoReset == nil) then self.db.profile.autoReset = { ["Daily"] = config:GetSecondsToReset().daily, ["Midweek"] = config:GetSecondsToReset().midweek, ["Weekly"] = config:GetSecondsToReset().weekly } end
   if (not self.db.profile.rememberUndo) then self.db.profile.undoTable = {} end
 end
 
@@ -259,7 +259,7 @@ end
 
 function Todo:ProfileNewVersion() -- profile
   -- if we're loading this profile for the first time after updating to 5.5+ from 5.4-
-  if (self.db.profile.itemsDaily or self.db.profile.itemsMidWeek or self.db.profile.itemsWeekly or self.db.profile.itemsFavorite or self.db.profile.itemsDesc or self.db.profile.checkedButtons) then
+  if (self.db.profile.itemsDaily or self.db.profile.itemsMidweek or self.db.profile.itemsWeekly or self.db.profile.itemsFavorite or self.db.profile.itemsDesc or self.db.profile.checkedButtons) then
     -- we need to change the saved variables to the new format
     local oldItemsList = config:Deepcopy(self.db.profile.itemsList)
     self.db.profile.itemsList = {}
@@ -272,8 +272,8 @@ function Todo:ProfileNewVersion() -- profile
         local tabName = "All"
         if (config:HasItem(self.db.profile.itemsDaily, itemName)) then
           tabName = "Daily"
-        elseif (config:HasItem(self.db.profile.itemsMidWeek, itemName)) then
-          tabName = "MidWeek"
+        elseif (config:HasItem(self.db.profile.itemsMidweek, itemName)) then
+          tabName = "Midweek"
         elseif (config:HasItem(self.db.profile.itemsWeekly, itemName)) then
           tabName = "Weekly"
         end
@@ -302,7 +302,7 @@ function Todo:ProfileNewVersion() -- profile
 
     -- bye bye
     self.db.profile.itemsDaily = nil;
-    self.db.profile.itemsMidWeek = nil;
+    self.db.profile.itemsMidweek = nil;
     self.db.profile.itemsWeekly = nil;
     self.db.profile.itemsFavorite = nil;
     self.db.profile.itemsDesc = nil;
@@ -530,14 +530,14 @@ function Todo:hideDailyTabItemsSET(info, newValue)
   itemsFrame:ReloadTab()
 end
 
--- hideMidWeekTabItems
-function Todo:hideMidWeekTabItemsGET(info)
-  Todo:hideMidWeekTabItemsSET(info, Todo.db.profile.hideMidWeekTabItems)
-  return Todo.db.profile.hideMidWeekTabItems;
+-- hideMidweekTabItems
+function Todo:hideMidweekTabItemsGET(info)
+  Todo:hideMidweekTabItemsSET(info, Todo.db.profile.hideMidweekTabItems)
+  return Todo.db.profile.hideMidweekTabItems;
 end
 
-function Todo:hideMidWeekTabItemsSET(info, newValue)
-  Todo.db.profile.hideMidWeekTabItems = newValue;
+function Todo:hideMidweekTabItemsSET(info, newValue)
+  Todo.db.profile.hideMidweekTabItems = newValue;
   itemsFrame:ReloadTab()
 end
 
@@ -625,7 +625,7 @@ end
 
 function Todo:midweekDaySET(info, newValue)
   Todo.db.profile.midweekDay = newValue;
-  Todo.db.profile.autoReset["MidWeek"] = config:GetSecondsToReset().midweek;
+  Todo.db.profile.autoReset["Midweek"] = config:GetSecondsToReset().midweek;
 end
 
 -- dailyHour
