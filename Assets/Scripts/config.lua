@@ -422,6 +422,38 @@ config.database = {
                       get = "dailyHourGET",
                       set = "dailyHourSET",
                   }, -- dailyHour
+                  midweekDay = {
+                    order = 1.1,
+                    type = "select",
+                    style = "dropdown",
+                    name = L["Midweek reset day"],
+                    desc = L["Choose the day for the Midweek reset"],
+                    values = {
+                      [2] = L["Monday"],
+                      [3] = L["Tuesday"],
+                      [4] = L["Wednesday"],
+                      [5] = L["Thursday"],
+                      [6] = L["Friday"],
+                      [7] = L["Saturday"],
+                      [1] = L["Sunday"],
+                    },
+                    sorting = {
+                      2, 3, 4, 5, 6, 7, 1,
+                    },
+                    get = "midweekDayGET",
+                    set = "midweekDaySET",
+                }, -- midweekDay
+                midweekHour = {
+                    order = 0.2,
+                    type = "range",
+                    name = L["Midweek reset hour"],
+                    desc = L["Choose the hour for the Midweek reset"],
+                    min = 0,
+                    max = 23,
+                    step = 1,
+                    get = "dailyHourGET",
+                    set = "dailyHourSET",
+                }, -- midweekHour
 
                   -- / layout widgets / --
 
@@ -502,6 +534,7 @@ config.database = {
             deleteAllTabItems = false,
             showOnlyAllTabItems = false,
             hideDailyTabItems = false,
+            hideMidweekTabItems = false,
             hideWeeklyTabItems = false,
 
             --'Chat Messages' tab
@@ -514,6 +547,10 @@ config.database = {
             --'Auto Uncheck' tab defaults to Tuesday at 8:00am
             weeklyDay = 3,
             dailyHour = 8,
+
+            --'Auto Uncheck' tab defaults to Friday at 8:00pm
+            midweekDay = 6,
+            midweekHour = 20,
         }, -- profile
     }, -- defaults
 }
@@ -681,11 +718,27 @@ function config:GetKeyFromValue(tabSource, value)
   return nil
 end
 
-local function getHoursUntilReset()
+local function getHoursUntilReset(midweekFlag)
   local dateValue = date("*t");
 
   local n = 0;
   local value = dateValue.hour;
+
+  if(midweekFlag) then -- if we have the midweek flag as true, let's get the reset info for midweek
+    while (value ~= Todo.db.profile.midweekHour) do
+      n = n + 1;
+      value = value + 1;
+      if (value == 24) then
+        value = 0;
+      end
+    end
+  
+    if (n == 0) then
+      n = 24;
+    end
+  
+    return n - 1;
+  end
 
   while (value ~= Todo.db.profile.dailyHour) do
     n = n + 1;
@@ -702,11 +755,28 @@ local function getHoursUntilReset()
   return n - 1; -- because it's a countdown (it's like min and sec are also displayed)
 end
 
-local function getDaysUntilReset()
+local function getDaysUntilReset(midweekFlag)
   local dateValue = date("*t");
-
   local n = 0;
   local value = dateValue.wday;
+
+  if(midweekFlag) then -- if we have the midweek flag as true, let's get the reset info for midweek
+    if(dateValue.hour >= Todo.db.profile.midweekHour) then
+      value = value + 1;
+      if (value == 8) then
+        value = 1;
+      end
+    end
+
+    while (value ~= Todo.db.profile.midweekDay) do
+      n = n + 1;
+      value = value + 1;
+      if (value == 8) then
+        value = 1;
+      end
+    end
+    return n;
+  end
 
   if (dateValue.hour >= Todo.db.profile.dailyHour) then
     value = value + 1;
@@ -732,6 +802,8 @@ function config:GetTimeUntilReset()
   local timeUntil = {
     days = getDaysUntilReset(),
     hour = getHoursUntilReset(),
+    mwDays = getDaysUntilReset(true),
+    mwHours = getHoursUntilReset(true),
     min = math.abs(dateValue.min - 59),
     sec = math.abs(dateValue.sec - 59),
   }
@@ -743,6 +815,12 @@ function config:GetSecondsToReset()
   local secondsUntil = {
     weekly = config:GetTimeUntilReset().days * 24 * 60 * 60
      + config:GetTimeUntilReset().hour * 60 * 60
+     + config:GetTimeUntilReset().min * 60
+     + config:GetTimeUntilReset().sec
+     + time(),
+    
+     midweek = config:GetTimeUntilReset().mwDays * 24 * 60 * 60
+     + config:GetTimeUntilReset().mwHours * 60 * 60
      + config:GetTimeUntilReset().min * 60
      + config:GetTimeUntilReset().sec
      + time(),
