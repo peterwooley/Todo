@@ -233,7 +233,10 @@ function Todo:DBInit()
 
   -- initialization of elements that need access to other files functions or need to be updated correctly when the profile changes
   if (self.db.profile.autoReset == nil) then self.db.profile.autoReset = { ["Daily"] = config:GetSecondsToReset().daily, ["Midweek"] = config:GetSecondsToReset().midweek, ["Weekly"] = config:GetSecondsToReset().weekly } end
-  if (not self.db.profile.rememberUndo) then self.db.profile.undoTable = {} end
+  -- Initialize midweek reset value if upgrading from 1.0.11 or earlier
+  if (self.db.profile.autoReset["Midweek"] == nil) then self.db.profile.autoReset["Midweek"] = config:GetSecondsToReset().midweek end
+  
+    if (not self.db.profile.rememberUndo) then self.db.profile.undoTable = {} end
 end
 
 function Todo:ProfileChanged()
