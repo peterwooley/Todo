@@ -11,7 +11,7 @@ local LDD = config.LDD;
 itemsFrame.todoButton = 0; -- so we can access it here, even though we create it in init.lua
 
 local itemsFrameUI;
-local AllTab, DailyTab, WeeklyTab, CurrentTab;
+local AllTab, DailyTab, MidweekTab, WeeklyTab, CurrentTab;
 
 -- reset variables
 local clearing, undoing = false, { ["clear"] = false, ["clearnb"] = 0, ["single"] = false, ["singleok"] = true};
@@ -123,6 +123,7 @@ local function ItemIsHiddenInResetTab(catName, itemName)
   if (checked) then
     -- if it's a checked daily item and we have to hide these, same for weekly
     if ((Todo.db.profile.hideDailyTabItems and itemTabName == "Daily")
+    or (Todo.db.profile.hideMidweekTabItems and itemTabName == "Midweek")
     or (Todo.db.profile.hideWeeklyTabItems and itemTabName == "Weekly")) then
       return true
     end
@@ -285,10 +286,10 @@ function itemsFrame:updateRemainingNumber()
   -- it's the big important function that gives us every number, checked and unchecked, favs or not
   local tab = itemsFrameUI.remainingNumber:GetParent();
 
-  local numberCheckedAll, numberCheckedDaily, numberCheckedWeekly = 0, 0, 0;
-  local numberCheckedFavAll, numberCheckedFavDaily, numberCheckedFavWeekly = 0, 0, 0;
-  local numberUncheckedAll, numberUncheckedDaily, numberUncheckedWeekly = 0, 0, 0;
-  local numberUncheckedFavAll, numberUncheckedFavDaily, numberUncheckedFavWeekly = 0, 0, 0;
+  local numberCheckedAll, numberCheckedDaily, numberCheckedMidweek, numberCheckedWeekly = 0, 0, 0, 0;
+  local numberCheckedFavAll, numberCheckedFavDaily, numberCheckedFavMidweek, numberCheckedFavWeekly = 0, 0, 0, 0;
+  local numberUncheckedAll, numberUncheckedDaily, numberUncheckedMidweek, numberUncheckedWeekly = 0, 0, 0, 0;
+  local numberUncheckedFavAll, numberUncheckedFavDaily, numberUncheckedFavMidweek, numberUncheckedFavWeekly = 0, 0, 0, 0;
   for _, items in pairs(Todo.db.profile.itemsList) do -- for every item
     for _, data in pairs(items) do
       -- All tab
@@ -319,6 +320,20 @@ function itemsFrame:updateRemainingNumber()
           end
         end
       end
+      -- Midweek tab
+      if (ItemIsInTab(data.tabName, "Midweek")) then
+        if (data.checked) then
+          numberCheckedMidweek = numberCheckedMidweek + 1
+          if (data.favorite) then
+            numberCheckedFavMidweek = numberCheckedFavMidweek + 1
+          end
+        else
+          numberUncheckedMidweek = numberUncheckedMidweek + 1
+          if (data.favorite) then
+            numberUncheckedFavMidweek = numberUncheckedFavMidweek + 1
+          end
+        end
+      end
       -- Weekly tab
       if (ItemIsInTab(data.tabName, "Weekly")) then
         if (data.checked) then
@@ -342,6 +357,8 @@ function itemsFrame:updateRemainingNumber()
     itemsFrameUI.remainingNumber:SetText(((numberUncheckedAll > 0) and "|cffffffff" or "|cff00ff00")..numberUncheckedAll.."|r "..((numberUncheckedFavAll > 0) and string.format("|cff%s%s|r", hex, "("..numberUncheckedFavAll..")") or ""));
   elseif (tab == DailyTab) then
     itemsFrameUI.remainingNumber:SetText(((numberUncheckedDaily > 0) and "|cffffffff" or "|cff00ff00")..numberUncheckedDaily.."|r "..((numberUncheckedFavDaily > 0) and string.format("|cff%s%s|r", hex, "("..numberUncheckedFavDaily..")") or ""));
+  elseif (tab == MidweekTab) then
+    itemsFrameUI.remainingNumber:SetText(((numberUncheckedMidweek > 0) and "|cffffffff" or "|cff00ff00")..numberUncheckedMidweek.."|r "..((numberUncheckedFavMidweek > 0) and string.format("|cff%s%s|r", hex, "("..numberUncheckedFavMidweek..")") or ""));
   elseif (tab == WeeklyTab) then
     itemsFrameUI.remainingNumber:SetText(((numberUncheckedWeekly > 0) and "|cffffffff" or "|cff00ff00")..numberUncheckedWeekly.."|r "..((numberUncheckedFavWeekly > 0) and string.format("|cff%s%s|r", hex, "("..numberUncheckedFavWeekly..")") or ""));
   end
@@ -371,6 +388,13 @@ function itemsFrame:updateRemainingNumber()
       end
     end
 
+    -- then we check if there are midweek remaining items
+    if (numberUncheckedMidweek > 0) then
+      if ((Todo.db.profile.autoReset["Midweek"] - time()) < 86400) then -- if there is less than one day left before the midweek reset
+        red = true
+      end
+    end
+
     -- then we check if there are weekly remaining items
     if (numberUncheckedWeekly > 0) then
       if ((Todo.db.profile.autoReset["Weekly"] - time()) < 86400) then -- if there is less than one day left before the weekly reset
@@ -390,18 +414,22 @@ function itemsFrame:updateRemainingNumber()
   local checked = {}
   checked.All = numberCheckedAll
   checked.Daily = numberCheckedDaily
+  checked.Midweek = numberCheckedMidweek
   checked.Weekly = numberCheckedWeekly
   local checkedFavs = {}
   checkedFavs.All = numberCheckedFavAll
   checkedFavs.Daily = numberCheckedFavDaily
+  checkedFavs.Midweek = numberCheckedFavMidweek
   checkedFavs.Weekly = numberCheckedFavWeekly
   local unchecked = {}
   unchecked.All = numberUncheckedAll
   unchecked.Daily = numberUncheckedDaily
+  unchecked.Midweek = numberUncheckedMidweek
   unchecked.Weekly = numberUncheckedWeekly
   local uncheckedFavs = {}
   uncheckedFavs.All = numberUncheckedFavAll
   uncheckedFavs.Daily = numberUncheckedFavDaily
+  uncheckedFavs.Midweek = numberUncheckedFavMidweek
   uncheckedFavs.Weekly = numberUncheckedFavWeekly
   return checked, checkedFavs, unchecked, uncheckedFavs; -- and we return them, so that we can access it eg. in the favorites warning function
 end
@@ -428,10 +456,18 @@ end
 function itemsFrame:autoReset()
   if time() > Todo.db.profile.autoReset["Weekly"] then
     Todo.db.profile.autoReset["Daily"] = config:GetSecondsToReset().daily;
+    Todo.db.profile.autoReset["Midweek"] = config:GetSecondsToReset().midweek;
     Todo.db.profile.autoReset["Weekly"] = config:GetSecondsToReset().weekly;
     itemsFrame:ResetBtns("Daily", true);
+    itemsFrame:ResetBtns("Midweek", true);
     itemsFrame:ResetBtns("Weekly", true);
     autoResetedThisSession = true;
+
+  elseif time() > Todo.db.profile.autoReset["Midweek"] then
+    Todo.db.profile.autoReset["Midweek"] = config:GetSecondsToReset().midweek;
+    itemsFrame:ResetBtns("Midweek", true);
+    autoResetedThisSession = true;
+
   elseif time() > Todo.db.profile.autoReset["Daily"] then
     Todo.db.profile.autoReset["Daily"] = config:GetSecondsToReset().daily;
     itemsFrame:ResetBtns("Daily", true);
@@ -618,7 +654,7 @@ function itemsFrame:AddItem(self, db)
           -- checking...
           local data = Todo.db.profile.itemsList[catName][itemName];
           if (data.tabName ~= "All" and data.tabName ~= tabName) then -- if the item already exists in this category but in an other reset tab
-            addResult = {L["No item can be daily and weekly!"], false};
+            addResult = {L["No item can be daily, midweek, and weekly!"], false};
           else -- if it isn't in the other reset tab, it means that the item is in the All tab -- CASE2 (add in reset tab, already in All)
             checked = data.checked -- in that case, we update the checked state to match the one the item had in the All tab
             data.tabName = tabName; -- and we transform that item into a 'tabName' item for this category
@@ -2263,7 +2299,8 @@ Tab_OnClick = function(self)
   -- Loading the good tab
   if (self:GetName() == "TodoUIFrameTab1") then loadTab(AllTab) end
   if (self:GetName() == "TodoUIFrameTab2") then loadTab(DailyTab) end
-  if (self:GetName() == "TodoUIFrameTab3") then loadTab(WeeklyTab) end
+  if (self:GetName() == "TodoUIFrameTab3") then loadTab(MidweekTab) end
+  if (self:GetName() == "TodoUIFrameTab4") then loadTab(WeeklyTab) end
 
   -- we update the frame after loading the tab to refresh the display
   ItemsFrame_Update();
@@ -2290,7 +2327,8 @@ local function SetTabs(frame, numTabs, ...)
     local name = ""
     if (tab:GetName() == "TodoUIFrameTab1") then name = "All"
     elseif (tab:GetName() == "TodoUIFrameTab2") then name = "Daily"
-    elseif (tab:GetName() == "TodoUIFrameTab3") then name = "Weekly" end
+    elseif (tab:GetName() == "TodoUIFrameTab3") then name = "Midweek"
+    elseif (tab:GetName() == "TodoUIFrameTab4") then name = "Weekly" end
     tab.content = CreateFrame("Frame", name, itemsFrameUI.ScrollFrame);
     tab.content:SetSize(308, 1); -- y is determined by number of elements inside of it
     tab.content:Hide();
@@ -2506,7 +2544,7 @@ function itemsFrame:CreateItemsFrame()
   end)
 
   -- Generating the tabs --
-  AllTab, DailyTab, WeeklyTab = SetTabs(itemsFrameUI, 3, L["All"], L["Daily"], L["Weekly"])
+  AllTab, DailyTab, MidweekTab, WeeklyTab = SetTabs(itemsFrameUI, 4, L["All"], L["Daily"], L["Midweek"], L["Weekly"])
 
   -- Initializing the frame with the current data
   itemsFrame:Init(false)
