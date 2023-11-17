@@ -2336,7 +2336,7 @@ local function SetTabs(frame, numTabs, ...)
     table.insert(contents, tab.content);
 
     if (i == 1) then -- position
-      tab:SetPoint("TOPLEFT", itemsFrameUI, "BOTTOMLEFT", 5, 2);
+      tab:SetPoint("TOPLEFT", itemsFrameUI, "BOTTOMLEFT", 5, 1);
     else
       tab:SetPoint("TOPLEFT", _G[frameName.."Tab"..(i - 1)], "TOPRIGHT", 0, 0);
     end
