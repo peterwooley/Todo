@@ -1068,7 +1068,7 @@ local function ItemsFrame_OnUpdate(self, elapsed)
 
 
   -- testing and showing the right button next to each items
-  if (IsShiftKeyDown()) then
+  if (IsShiftKeyDown() and MouseIsOver(itemsFrameUI)) then
     for catName, items in pairs(Todo.db.profile.itemsList) do
       for itemName in pairs(items) do
         -- we show every star icons
@@ -1077,7 +1077,7 @@ local function ItemsFrame_OnUpdate(self, elapsed)
         favoriteBtn[catName][itemName]:Show();
       end
     end
-  elseif (IsControlKeyDown()) then
+  elseif (IsControlKeyDown() and MouseIsOver(itemsFrameUI)) then
     for catName, items in pairs(Todo.db.profile.itemsList) do
       for itemName in pairs(items) do
         -- we show every paper icons
@@ -1109,7 +1109,7 @@ local function ItemsFrame_OnUpdate(self, elapsed)
     end
   end
 
-  if (IsAltKeyDown()) then
+  if (IsAltKeyDown() and MouseIsOver(itemsFrameUI)) then
     itemsFrame:ValidateTutorial("ALTkey"); -- tutorial
     -- we switch the category and frame options buttons for the undo and frame action ones and vice versa
     itemsFrameUI.categoryButton:Hide()
