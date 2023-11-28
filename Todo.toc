@@ -4,6 +4,7 @@
 ## Author: Peter Wooley <peterwooley@gmail.com>
 ## Title: Todo
 ## Notes: Track your daily, midweek, weekly, and long-term goals using categories and profiles
+## IconTexture: Interface\AddOns\Todo\icon.png
 
 ## DefaultState: enabled
 ## SavedVariables: TodoDB
