@@ -1179,6 +1179,7 @@ function itemsFrame:CreateMovableCheckBtnElems(catName, itemName)
 
   if (not config:HasKey(checkBtn, catName)) then checkBtn[catName] = {} end
   checkBtn[catName][itemName] = CreateFrame("CheckButton", "Todo_CheckBtn_"..catName.."_"..itemName, itemsFrameUI, "UICheckButtonTemplate");
+  checkBtn[catName][itemName]:SetHitRectInsets(4,4,4,4)
   checkBtn[catName][itemName].InteractiveLabel = config:CreateNoPointsInteractiveLabel(checkBtn[catName][itemName]:GetName().."_InteractiveLabel", checkBtn[catName][itemName], itemName, "GameFontNormal");
   checkBtn[catName][itemName].InteractiveLabel:SetPoint("LEFT", checkBtn[catName][itemName], "RIGHT")
   checkBtn[catName][itemName].InteractiveLabel.Text:SetPoint("LEFT", checkBtn[catName][itemName], "RIGHT", 10, 0)
