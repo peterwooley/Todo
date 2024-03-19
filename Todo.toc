@@ -1,5 +1,5 @@
 ## Interface: 100206
-## Version: 1.1.5
+## Version: 1.1.6
 
 ## Author: Peter Wooley <peterwooley@gmail.com>
 ## Title: Todo
