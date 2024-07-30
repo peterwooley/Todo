@@ -14,8 +14,8 @@ config.LDBIcon = LibStub("LibDBIcon-1.0")
 config.LDD = LibStub:GetLibrary("LibUIDropDownMenu-4.0")
 -- data (from toc file)
 config.toc = {}
-config.toc.title = GetAddOnMetadata(addonName, "Title")
-config.toc.version = GetAddOnMetadata(addonName, "Version")
+config.toc.title = C_AddOns.GetAddOnMetadata(addonName, "Title")
+config.toc.version = C_AddOns.GetAddOnMetadata(addonName, "Version")
 
 -- Variables
 local L = config.L
