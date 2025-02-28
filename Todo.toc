@@ -1,5 +1,5 @@
 ## Interface: 110100
-## Version: 1.1.11
+## Version: 1.1.12
 
 ## Author: Peter Wooley <peterwooley@gmail.com>
 ## Title: Todo
