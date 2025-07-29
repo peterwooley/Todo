@@ -354,13 +354,13 @@ function itemsFrame:updateRemainingNumber()
   -- we update the number of remaining things to do for the current tab
   local hex = config:RGBToHex({ Todo.db.profile.favoritesColor[1]*255, Todo.db.profile.favoritesColor[2]*255, Todo.db.profile.favoritesColor[3]*255} );
   if (tab == AllTab) then
-    itemsFrameUI.remainingNumber:SetText(((numberUncheckedAll > 0) and "|cffffffff" or "|cff00ff00")..numberUncheckedAll.."|r "..((numberUncheckedFavAll > 0) and string.format("|cff%s%s|r", hex, "("..numberUncheckedFavAll..")") or ""));
+    itemsFrameUI.remainingNumber:SetText(((numberUncheckedAll > 0) and "|cffffffff" or "|cff999999")..numberUncheckedAll.."|r "..((numberUncheckedFavAll > 0) and string.format("|cff%s%s|r", hex, "("..numberUncheckedFavAll..")") or ""));
   elseif (tab == DailyTab) then
-    itemsFrameUI.remainingNumber:SetText(((numberUncheckedDaily > 0) and "|cffffffff" or "|cff00ff00")..numberUncheckedDaily.."|r "..((numberUncheckedFavDaily > 0) and string.format("|cff%s%s|r", hex, "("..numberUncheckedFavDaily..")") or ""));
+    itemsFrameUI.remainingNumber:SetText(((numberUncheckedDaily > 0) and "|cffffffff" or "|cff999999")..numberUncheckedDaily.."|r "..((numberUncheckedFavDaily > 0) and string.format("|cff%s%s|r", hex, "("..numberUncheckedFavDaily..")") or ""));
   elseif (tab == MidweekTab) then
-    itemsFrameUI.remainingNumber:SetText(((numberUncheckedMidweek > 0) and "|cffffffff" or "|cff00ff00")..numberUncheckedMidweek.."|r "..((numberUncheckedFavMidweek > 0) and string.format("|cff%s%s|r", hex, "("..numberUncheckedFavMidweek..")") or ""));
+    itemsFrameUI.remainingNumber:SetText(((numberUncheckedMidweek > 0) and "|cffffffff" or "|cff999999")..numberUncheckedMidweek.."|r "..((numberUncheckedFavMidweek > 0) and string.format("|cff%s%s|r", hex, "("..numberUncheckedFavMidweek..")") or ""));
   elseif (tab == WeeklyTab) then
-    itemsFrameUI.remainingNumber:SetText(((numberUncheckedWeekly > 0) and "|cffffffff" or "|cff00ff00")..numberUncheckedWeekly.."|r "..((numberUncheckedFavWeekly > 0) and string.format("|cff%s%s|r", hex, "("..numberUncheckedFavWeekly..")") or ""));
+    itemsFrameUI.remainingNumber:SetText(((numberUncheckedWeekly > 0) and "|cffffffff" or "|cff999999")..numberUncheckedWeekly.."|r "..((numberUncheckedFavWeekly > 0) and string.format("|cff%s%s|r", hex, "("..numberUncheckedFavWeekly..")") or ""));
   end
   -- same for the category label ones
   for catName in pairs(label) do -- for every category labels
@@ -439,7 +439,9 @@ function itemsFrame:updateCheckButtonsColor()
     for itemName, data in pairs(items) do
       -- we color them in a color corresponding to their checked state
       if (checkBtn[catName][itemName]:GetChecked()) then
-        checkBtn[catName][itemName].InteractiveLabel.Text:SetTextColor(0, 1, 0);
+        -- Dimmed yellow color for completed items
+        checkBtn[catName][itemName].InteractiveLabel.Text:SetTextColor(unpack(config:ThemeDownTo01(config:DimTheme(config.database.theme_yellow, 0.5))))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
       else
         if (data.favorite) then
           checkBtn[catName][itemName].InteractiveLabel.Text:SetTextColor(unpack(Todo.db.profile.favoritesColor));
