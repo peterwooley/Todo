@@ -20,8 +20,7 @@ function Todo:ToggleFrame()
 end
 
 function Todo:ToggleOptions(fromFrame)
-  InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
-  InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
+  Settings.OpenToCategory(self.optionsId)
 end
 
 function Todo:Warn()
