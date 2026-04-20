@@ -1556,7 +1556,16 @@ function private:Item_RefreshCharTooltip()
 		-- then display
 		self.tooltipText = {L["Checked on:"]}
 		for _,fullName in ipairs(T_Item_RefreshCharTooltip) do
-			table.insert(self.tooltipText, itemWidget.itemData.characterChecked[fullName])
+			local displayText = itemWidget.itemData.characterChecked[fullName]
+			pcall(function() -- migrate old icon to new one
+				if string.find(displayText, "|TInterface\\CHARACTERFRAME\\TemporaryPortrait") then
+					local genderSuffix, raceFile = displayText:match("TemporaryPortrait%-([^-]+)%-([^:|]+)")
+					displayText = string.gsub(displayText, "|T.-|t", utils:GetPlayerRaceIcon(raceFile, genderSuffix), 1)
+					displayText = type(displayText) == "string" and displayText or fullName
+					itemWidget.itemData.characterChecked[fullName] = displayText
+				end
+			end)
+			table.insert(self.tooltipText, displayText)
 		end
 	elseif database.ctabstate() and itemWidget.itemData.isAccountWide and itemWidget.itemData.checked then
 		self.tooltipText = {utils:ColorText({1*255, 0.82*255, 0}, L["Checked on all characters"])}

@@ -1,4 +1,9 @@
-#### **7.5.1**
+#### **7.5.2**
+
+- Bump interface number (Midnight 12.0.5, MoP 5.5.4)
+- Tweak race icons for checked items in global tabs (fix for haranir)
+
+#### **7.5.1** (7.5)
 
 - Added character-specific check for items in global tabs!
 - New tutorials and help commands (/tdl tabs) have been added to explain the feature
