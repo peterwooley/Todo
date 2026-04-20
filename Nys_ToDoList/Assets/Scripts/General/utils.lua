@@ -361,7 +361,99 @@ function utils:BuildPlayerUnitString()
         )
     end
 
-    local raceIcon = "|TInterface\\CHARACTERFRAME\\TemporaryPortrait-" .. genderSuffix .. "-" .. raceFile .. ":16|t"
+	-- THX WOW for flat out FORGETTING to add the TemporaryPortrait for the new haranir race
+	-- local raceIcon = "|TInterface\\CHARACTERFRAME\\TemporaryPortrait-" .. genderSuffix .. "-" .. raceFile .. ":16|t"
+	local raceIcon = utils:GetPlayerRaceIcon(raceFile, genderSuffix)
 
     return raceIcon .. " " .. classColor .. fullName .. "|r"
 end
+
+---Helper
+---@return string the fully formated string
+function utils:GetPlayerRaceIcon(raceFile, genderSuffix)
+	raceFile = string.lower(tostring(raceFile))
+	genderSuffix = string.lower(tostring(genderSuffix))
+	if raceFile == "harronir" then raceFile = "haranir" end -- bro cmon
+	if raceFile == "scourge" then raceFile = "undead" end -- bro cmon
+
+	local raceIcon = ""
+
+	local info = utils.raceIconInfo["raceicon128-" .. raceFile .. "-" .. genderSuffix]
+	if info then
+		raceIcon = string.format(
+			"|T%s:%d:%d:0:0:%d:%d:%d:%d:%d:%d|t",
+			enums.artPath.."CharacterCreateIcons",
+			16, 16,
+			info[1], info[2],
+			info[3] * info[1],
+			info[4] * info[1],
+			info[5] * info[2],
+			info[6] * info[2]
+		)
+	end
+
+	return raceIcon
+end
+
+utils.raceIconInfo = {
+	-- https://www.townlong-yak.com/framexml/12.0.5/Helix/AtlasInfo.lua (change wow version in url)
+	-- find ["Interface/Glues/CharacterCreate/CharacterCreateIcons"],
+	-- only the raceicon128 lines, and I use the CharacterCreateIcons.blp from retail (ExportInterfaceFiles art) that I copied into my addon
+
+	["raceicon128-bloodelf-female"]={128, 128, 0.0639648, 0.126465, 0.762695, 0.887695, false, false, nil},
+	["raceicon128-bloodelf-male"]={128, 128, 0.127441, 0.189941, 0.000976562, 0.125977, false, false, nil},
+	["raceicon128-darkirondwarf-female"]={128, 128, 0.127441, 0.189941, 0.12793, 0.25293, false, false, nil},
+	["raceicon128-darkirondwarf-male"]={128, 128, 0.127441, 0.189941, 0.254883, 0.379883, false, false, nil},
+	["raceicon128-draenei-female"]={128, 128, 0.190918, 0.253418, 0.000976562, 0.125977, false, false, nil},
+	["raceicon128-draenei-male"]={128, 128, 0.190918, 0.253418, 0.12793, 0.25293, false, false, nil},
+	["raceicon128-dwarf-female"]={128, 128, 0.190918, 0.253418, 0.254883, 0.379883, false, false, nil},
+	["raceicon128-dwarf-male"]={128, 128, 0.190918, 0.253418, 0.381836, 0.506836, false, false, nil},
+	["raceicon128-gnome-female"]={128, 128, 0.190918, 0.253418, 0.762695, 0.887695, false, false, nil},
+	["raceicon128-gnome-male"]={128, 128, 0.254395, 0.316895, 0.000976562, 0.125977, false, false, nil},
+	["raceicon128-goblin-female"]={128, 128, 0.254395, 0.316895, 0.12793, 0.25293, false, false, nil},
+	["raceicon128-goblin-male"]={128, 128, 0.254395, 0.316895, 0.254883, 0.379883, false, false, nil},
+	["raceicon128-highmountain-female"]={128, 128, 0.254395, 0.316895, 0.635742, 0.760742, false, false, nil},
+	["raceicon128-highmountain-male"]={128, 128, 0.254395, 0.316895, 0.762695, 0.887695, false, false, nil},
+	["raceicon128-human-female"]={128, 128, 0.317871, 0.380371, 0.000976562, 0.125977, false, false, nil},
+	["raceicon128-human-male"]={128, 128, 0.317871, 0.380371, 0.12793, 0.25293, false, false, nil},
+	["raceicon128-kultiran-female"]={128, 128, 0.317871, 0.380371, 0.254883, 0.379883, false, false, nil},
+	["raceicon128-kultiran-male"]={128, 128, 0.317871, 0.380371, 0.381836, 0.506836, false, false, nil},
+	["raceicon128-lightforged-female"]={128, 128, 0.317871, 0.380371, 0.508789, 0.633789, false, false, nil},
+	["raceicon128-lightforged-male"]={128, 128, 0.317871, 0.380371, 0.635742, 0.760742, false, false, nil},
+	["raceicon128-magharorc-female"]={128, 128, 0.317871, 0.380371, 0.762695, 0.887695, false, false, nil},
+	["raceicon128-magharorc-male"]={128, 128, 0.381348, 0.443848, 0.000976562, 0.125977, false, false, nil},
+	["raceicon128-mechagnome-female"]={128, 128, 0.381348, 0.443848, 0.12793, 0.25293, false, false, nil},
+	["raceicon128-mechagnome-male"]={128, 128, 0.381348, 0.443848, 0.254883, 0.379883, false, false, nil},
+	["raceicon128-nightborne-female"]={128, 128, 0.381348, 0.443848, 0.381836, 0.506836, false, false, nil},
+	["raceicon128-nightborne-male"]={128, 128, 0.381348, 0.443848, 0.508789, 0.633789, false, false, nil},
+	["raceicon128-nightelf-female"]={128, 128, 0.381348, 0.443848, 0.635742, 0.760742, false, false, nil},
+	["raceicon128-nightelf-male"]={128, 128, 0.381348, 0.443848, 0.762695, 0.887695, false, false, nil},
+	["raceicon128-orc-female"]={128, 128, 0.444824, 0.507324, 0.000976562, 0.125977, false, false, nil},
+	["raceicon128-orc-male"]={128, 128, 0.444824, 0.507324, 0.12793, 0.25293, false, false, nil},
+	["raceicon128-pandaren-female"]={128, 128, 0.444824, 0.507324, 0.254883, 0.379883, false, false, nil},
+	["raceicon128-pandaren-male"]={128, 128, 0.444824, 0.507324, 0.381836, 0.506836, false, false, nil},
+	["raceicon128-tauren-female"]={128, 128, 0.444824, 0.507324, 0.508789, 0.633789, false, false, nil},
+	["raceicon128-tauren-male"]={128, 128, 0.444824, 0.507324, 0.635742, 0.760742, false, false, nil},
+	["raceicon128-troll-female"]={128, 128, 0.444824, 0.507324, 0.762695, 0.887695, false, false, nil},
+	["raceicon128-troll-male"]={128, 128, 0.508301, 0.570801, 0.000976562, 0.125977, false, false, nil},
+	["raceicon128-undead-female"]={128, 128, 0.571777, 0.634277, 0.000976562, 0.125977, false, false, nil},
+	["raceicon128-undead-male"]={128, 128, 0.635254, 0.697754, 0.000976562, 0.125977, false, false, nil},
+	["raceicon128-voidelf-female"]={128, 128, 0.825684, 0.888184, 0.000976562, 0.125977, false, false, nil},
+	["raceicon128-voidelf-male"]={128, 128, 0.88916, 0.95166, 0.000976562, 0.125977, false, false, nil},
+	["raceicon128-vulpera-female"]={128, 128, 0.508301, 0.570801, 0.12793, 0.25293, false, false, nil},
+	["raceicon128-vulpera-male"]={128, 128, 0.508301, 0.570801, 0.254883, 0.379883, false, false, nil},
+	["raceicon128-worgen-female"]={128, 128, 0.508301, 0.570801, 0.381836, 0.506836, false, false, nil},
+	["raceicon128-worgen-male"]={128, 128, 0.508301, 0.570801, 0.508789, 0.633789, false, false, nil},
+	["raceicon128-zandalari-female"]={128, 128, 0.508301, 0.570801, 0.635742, 0.760742, false, false, nil},
+	["raceicon128-zandalari-male"]={128, 128, 0.508301, 0.570801, 0.762695, 0.887695, false, false, nil},
+	["raceicon128-dracthyr-female"]={128, 128, 0.127441, 0.189941, 0.381836, 0.506836, false, false, nil},
+	["raceicon128-dracthyr-male"]={128, 128, 0.127441, 0.189941, 0.508789, 0.633789, false, false, nil},
+	["raceicon128-visage-female"]={128, 128, 0.69873, 0.76123, 0.000976562, 0.125977, false, false, nil},
+	["raceicon128-visage-male"]={128, 128, 0.762207, 0.824707, 0.000976562, 0.125977, false, false, nil},
+	["raceicon128-dracthyrvisage-female"]={128, 128, 0.127441, 0.189941, 0.635742, 0.760742, false, false, nil},
+	["raceicon128-dracthyrvisage-male"]={128, 128, 0.127441, 0.189941, 0.762695, 0.887695, false, false, nil},
+	["raceicon128-earthen-female"]={128, 128, 0.190918, 0.253418, 0.508789, 0.633789, false, false, nil},
+	["raceicon128-earthen-male"]={128, 128, 0.190918, 0.253418, 0.635742, 0.760742, false, false, nil},
+	["raceicon128-haranir-female"]={128, 128, 0.254395, 0.316895, 0.381836, 0.506836, false, false, nil},
+	["raceicon128-haranir-male"]={128, 128, 0.254395, 0.316895, 0.508789, 0.633789, false, false, nil},
+}
