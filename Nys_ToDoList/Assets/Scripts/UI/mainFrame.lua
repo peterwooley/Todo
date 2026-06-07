@@ -1434,8 +1434,9 @@ function mainFrame:CreateTDLFrame()
 		local offsetX = (utils:IsMidnight() and -19 or 0)
 		tdlFrame.ScrollFrame.ScrollBar:SetPoint("TOPLEFT", tdlFrame, "TOPRIGHT", offsetX, -30-24)
 	else
+		local offsetX = ((LE_EXPANSION_LEVEL_CURRENT >= 4) and -15 or 9) -- actually crazy
 		tdlFrame.ScrollFrame.ScrollBar:SetScale(1.05)
-		tdlFrame.ScrollFrame.ScrollBar:SetPoint("TOPLEFT", tdlFrame, "TOPRIGHT", 9, -60)
+		tdlFrame.ScrollFrame.ScrollBar:SetPoint("TOPLEFT", tdlFrame, "TOPRIGHT", offsetX, -60)
 		tdlFrame.ScrollFrame.ScrollBar:HookScript("OnShow", function(self) -- classic scroll bar has a mind of its own
 			if NysTDL.acedb.profile.isInClearView then
 				self:Hide()

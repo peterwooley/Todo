@@ -1,3 +1,8 @@
+#### **7.5.3**
+
+- Quick fix for the latest blizz oopsie (only mists got affected right now, comments in toc files broke everything)
+- Bump interface number (Midnight 12.0.7)
+
 #### **7.5.2**
 
 - Bump interface number (Midnight 12.0.5, MoP 5.5.4)
