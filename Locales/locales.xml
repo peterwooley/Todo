@@ -3,4 +3,5 @@
 
   <!-- Loading every localization file -->
   <Script file="enUS.lua"/>
+  <Script file="ruRU.lua"/>
 </Ui>
