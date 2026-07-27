@@ -13,3 +13,4 @@ Track your daily, weekly, midweekly, and long-term goals using categories and pr
 ## Credit
 * Forked from [Ny's To-Do List add-on](https://www.curseforge.com/wow/addons/nys-todolist) and adapted by Peter Wooley
 * Midweek support added by [JoeLatte88](https://github.com/JoeLatte88)
+* Russian translation added by [Hubbotu](https://github.com/Hubbotu)
